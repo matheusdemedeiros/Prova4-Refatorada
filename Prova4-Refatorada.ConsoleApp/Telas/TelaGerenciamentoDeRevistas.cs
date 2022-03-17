@@ -87,7 +87,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
                 {
                     do
                     {
-                        Console.Write("\nDigite o Id dda revista que deseja editar: ");
+                        Console.Write("\nDigite o Id da revista que deseja editar: ");
 
                         inputDoUsuario = Console.ReadLine();
 
@@ -257,7 +257,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
 
             if (VerificaSeOhArrayDeCaixasEstaVazio() == false)
             {
-                Console.Write("\nInforme o Id da caixa que irá guardar a evista: ");
+                Console.Write("\nInforme o Id da caixa que irá guardar a revista: ");
 
                 idDaCaixaInput = Console.ReadLine();
 
