@@ -27,7 +27,6 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
             status = "aberto";
             revistaDoEmprestimo.RegistrarUmEmprestimo(this);
             amigoQueEmprestou.RegistrarEmprestimo(this);
-
         }
         
         public void Devolver()
@@ -36,10 +35,6 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
             dataDaDevolução = DateTime.Now;
             revistaDoEmprestimo.RegistrarDevolucao(this);
             amigoQueEmprestou.RegistarDevolucao(this);
-
         }
-
-
-
     }
 }

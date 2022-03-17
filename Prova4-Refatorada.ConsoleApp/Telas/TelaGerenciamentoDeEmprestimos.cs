@@ -4,9 +4,10 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
 {
     public class TelaGerenciamentoDeEmprestimos
     {
-        public string opcaoEscolhida = "";
+        public string opcaoEscolhida = "", idRevistaInput = "", idAmigoInput = "", idEmprestimoInput = "", dataAberturaInput = "";
         public int inicioMenu = 0, fimMenu = 7, opcaoEmNumero = int.MinValue;
-        public bool telaContinuaSendoExibida = true;
+        public bool telaContinuaSendoExibida = true, abortarProcesso = false, revistaValida = false, amigoValido = false, emprestimoValido = false, dataDeAberturaValida = false;
+        public DateTime dataAberturaDateTime = new DateTime(1, 1, 1);
         public Emprestimo[] emprestimos;
         public Revista[] revistas;
         public Caixa[] caixas;
@@ -15,6 +16,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
 
         public void ApresentarMenu()
         {
+            ResetarVariaveisDaTela();
             while (telaContinuaSendoExibida)
             {
                 Console.Clear();
@@ -58,7 +60,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
                     ListarTodosOsEmprestimosEmAberto();
                     break;
                 case 6:
-                    ExcluirUmEmprestimo();
+                    RemoverUmEmprestimo();
                     break;
                 case 7:
                     EditarUmEmprestimo();
@@ -69,15 +71,157 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
             }
         }
 
-        //Implementar o empréstimo
-        private void EditarUmEmprestimo()
+        public void EditarUmEmprestimo()
         {
-            throw new NotImplementedException();
+            Console.Clear();
+
+            Console.WriteLine("\n====== EDITAR UM EMPRÉSTIMO ======");
+
+            Console.WriteLine("\nPARA ABORTAR O CADASTRO DIGITE *-- !!");
+
+            bool idInputadoValido = false;
+
+            string inputDoUsuario = "";
+
+            if (VerificaSeOhArrayDeRevistasEstaVazio())
+                Util.ApresentarMensagem("AINDA NÃO EXISTEM EMPRÉSTIMOS CADASTRADOS!!", ConsoleColor.Yellow);
+            else
+            {
+                if (abortarProcesso == false)
+                {
+                    do
+                    {
+                        Console.Write("\nDigite o Id do empréstimo que deseja editar: ");
+
+                        inputDoUsuario = Console.ReadLine();
+
+                        if (VerificaSeEhParaAbortarOhProcesso(inputDoUsuario))
+                            break;
+                        else if (Util.VerificaSeOhInputDoUsuarioEhUmNumeroInteiro(inputDoUsuario))
+                        {
+                            idInputadoValido = true;
+
+                            Emprestimo emprestimoRetornado = null;
+
+                            emprestimoRetornado = RetornaUmEmprestimoDoArrayPeloId(Util.VerificaSeOhInputDoUsuarioEhUmNumeroInteiroEhRetornaOhValor(inputDoUsuario));
+
+                            if (emprestimoRetornado == null)
+                                Util.ApresentarMensagem("O ID INFORMADO NÃO FOI ENCONTRADO NO SISTEMA!!", ConsoleColor.Yellow);
+                            else
+                            {
+                                Console.WriteLine("\n=== ESTE É O EMPRÉSTIMO A SER EDITADO ===\n");
+
+                                emprestimoRetornado.MostrarDados();
+
+                                Console.Write("\nVOCÊ CONFIRMA A DEVOLUÇÃO? (S/N): ");
+
+                                bool confirmaEdicao = Util.PedeConfirmacaoDoUsuario(Console.ReadLine());
+
+                                if (confirmaEdicao == true)
+                                {
+                                    PedeOsDadosDoEmprestimo();
+
+                                    emprestimoRetornado.dataDoEmprestimo = dataAberturaDateTime;
+
+                                    Util.ApresentarMensagem("EMPRÉSTIMO EDITADO COM SUCESSO!!", ConsoleColor.Green);
+                                }
+                                else
+                                {
+                                    Util.ApresentarMensagem("EDIÇÃOO NÃO CONFIRMADA!!", ConsoleColor.Yellow);
+                                }
+                            }
+                        }
+                        else
+                            Util.ApresentarMensagem("ENTRADA INVÁLIDA!!", ConsoleColor.Red);
+
+                    } while (idInputadoValido == false);
+                }
+                if (abortarProcesso == true)
+                {
+                    Util.ApresentarMensagem("VOCÊ ABORTOU A EDIÇÃO!!", ConsoleColor.DarkCyan);
+                }
+            }
         }
 
-        private void ExcluirUmEmprestimo()
+        public void RemoverUmEmprestimo()
         {
-            throw new NotImplementedException();
+            Console.Clear();
+
+            Console.WriteLine("\n====== REMOVER UM EMPRÉSTIMO ======");
+
+            Console.WriteLine("\nPARA ABORTAR O CADASTRO DIGITE *-- !!");
+
+            bool idInputadoValido = false;
+
+            string inputDoUsuario = "";
+
+            if (VerificaSeOhArrayDeRevistasEstaVazio())
+                Util.ApresentarMensagem("AINDA NÃO EXISTEM EMPRÉSTIMOS CADASTRADOS!!", ConsoleColor.Yellow);
+            else
+            {
+                if (abortarProcesso == false)
+                {
+                    do
+                    {
+                        Console.Write("\nDigite o Id do empréstimo que deseja remover: ");
+
+                        inputDoUsuario = Console.ReadLine();
+
+                        if (VerificaSeEhParaAbortarOhProcesso(inputDoUsuario))
+                            break;
+                        else if (Util.VerificaSeOhInputDoUsuarioEhUmNumeroInteiro(inputDoUsuario))
+                        {
+                            idInputadoValido = true;
+
+                            Emprestimo emprestimoRetornado = null;
+
+                            emprestimoRetornado = RetornaUmEmprestimoDoArrayPeloId(Util.VerificaSeOhInputDoUsuarioEhUmNumeroInteiroEhRetornaOhValor(inputDoUsuario));
+
+                            if (emprestimoRetornado == null)
+                                Util.ApresentarMensagem("O ID INFORMADO NÃO FOI ENCONTRADO NO SISTEMA!!", ConsoleColor.Yellow);
+                            else
+                            {
+                                Console.WriteLine("\n=== ESTE É O EMPRÉSTIMO A SER REMOVIDO ===\n");
+
+                                emprestimoRetornado.MostrarDados();
+
+                                Console.Write("\nVOCÊ CONFIRMA A DEVOLUÇÃO? (S/N): ");
+
+                                bool confirmaRemocao = Util.PedeConfirmacaoDoUsuario(Console.ReadLine());
+
+                                if (confirmaRemocao == true)
+                                {
+                                    if (emprestimoRetornado.status == "devolvido")
+                                    {
+                                        emprestimoRetornado.revistaDoEmprestimo.RemoverEmprestimoDoArray(emprestimoRetornado);
+
+                                        emprestimoRetornado.amigoQueEmprestou.RemoverEmprestimoDoArray(emprestimoRetornado);
+
+                                        RemoverEmprestimoDoArray(emprestimoRetornado);
+
+                                        Util.ApresentarMensagem("EMPRÉSTIMO REMOVIDO COM SUCESSO!!", ConsoleColor.Green);
+                                    }
+                                    else
+                                    {
+                                        Util.ApresentarMensagem("EMPRÉSTIMO NÃ OPODE SER REMOVIDO, POIS ESTÁ EM ABERTO!!", ConsoleColor.Green);
+                                    }
+                                }
+                                else
+                                {
+                                    Util.ApresentarMensagem("REMOÇÃO NÃO CONFIRMADA!!", ConsoleColor.Yellow);
+                                }
+                            }
+                        }
+                        else
+                            Util.ApresentarMensagem("ENTRADA INVÁLIDA!!", ConsoleColor.Red);
+
+                    } while (idInputadoValido == false);
+                }
+                if (abortarProcesso == true)
+                {
+                    Util.ApresentarMensagem("VOCÊ ABORTOU A REMOÇÃO!!", ConsoleColor.DarkCyan);
+                }
+            }
         }
 
         public void ListarTodosOsEmprestimos()
@@ -86,15 +230,14 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
 
             Console.WriteLine("\n====== LISTANDO TODOS OS EMPRÉSTIMOS ======");
 
-            int posicaoLivre = Util.RetornaAhPosicaoLivreDeUmArray(emprestimos);
-
-            if (posicaoLivre == 0)
+            if (VerificaSeOhArrayDeEmprestimosEstaVazio())
                 Util.ApresentarMensagem("AINDA NÃO EXISTEM EMPRÉSTIMOS CADASTRADOS!!", ConsoleColor.Yellow);
             else
             {
-                for (int i = 0; i < posicaoLivre; i++)
+                for (int i = 0; i < emprestimos.Length; i++)
                 {
-                    emprestimos[i].MostrarDados();
+                    if (emprestimos[i] != null)
+                        emprestimos[i].MostrarDados();
                 }
 
                 Util.ApresentarMensagem("FIM DOS RESULTADOS!!", ConsoleColor.Cyan);
@@ -107,24 +250,24 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
 
             Console.WriteLine("\n====== LISTANDO TODOS OS EMPRÉSTIMOS EM ABERTO ======");
 
-            int posicaoLivre = Util.RetornaAhPosicaoLivreDeUmArray(emprestimos);
-
-            if (posicaoLivre == 0)
+            if (VerificaSeOhArrayDeEmprestimosEstaVazio())
                 Util.ApresentarMensagem("AINDA NÃO EXISTEM EMPRÉSTIMOS CADASTRADOS!!", ConsoleColor.Yellow);
             else
             {
-                int quantidadeDeEmprestimosAbertos = 0;
+                int quantidadeDeEmprestimosEmAberto = 0;
 
-                for (int i = 0; i < posicaoLivre; i++)
+                for (int i = 0; i < emprestimos.Length; i++)
                 {
-                    if (emprestimos[i].status == "aberto")
+                    if (emprestimos[i] != null && emprestimos[i].status == "aberto")
                     {
                         emprestimos[i].MostrarDados();
-                        quantidadeDeEmprestimosAbertos++;
+                        quantidadeDeEmprestimosEmAberto++;
                     }
                 }
-                if (quantidadeDeEmprestimosAbertos == 0)
-                    Util.ApresentarMensagem("NÃO EXISTEM EMPRÉSTIMOS EM ABERTO NO SISTEMA!!", ConsoleColor.Yellow);
+                if (quantidadeDeEmprestimosEmAberto == 0)
+                    Util.ApresentarMensagem("NÃO EXISTEM EMPRÉSTIMOS EM ABERTO!!", ConsoleColor.Yellow);
+                else
+                    Util.ApresentarMensagem("FIM DOS RESULTADOS!!", ConsoleColor.Cyan);
             }
         }
 
@@ -134,9 +277,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
 
             Console.WriteLine("\n====== LISTANDO TODOS OS EMPRÉSTIMOS DO MÊS ======");
 
-            int posicaoLivre = Util.RetornaAhPosicaoLivreDeUmArray(emprestimos);
-
-            if (posicaoLivre == 0)
+            if (VerificaSeOhArrayDeEmprestimosEstaVazio())
                 Util.ApresentarMensagem("AINDA NÃO EXISTEM EMPRÉSTIMOS CADASTRADOS!!", ConsoleColor.Yellow);
             else
             {
@@ -144,9 +285,9 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
 
                 DateTime hoje = DateTime.Today;
 
-                for (int i = 0; i < posicaoLivre; i++)
+                for (int i = 0; i < emprestimos.Length; i++)
                 {
-                    if (emprestimos[i].dataDoEmprestimo.Month == hoje.Month)
+                    if (emprestimos[i] != null && emprestimos[i].dataDoEmprestimo.Month == hoje.Month)
                     {
                         emprestimos[i].MostrarDados();
                         quantidadeDeEmprestimosDoMes++;
@@ -154,17 +295,352 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
                 }
                 if (quantidadeDeEmprestimosDoMes == 0)
                     Util.ApresentarMensagem("NÃO FORAM REALIZADOS EMPRÉSTIMOS NO MÊS ATUAL!!", ConsoleColor.Yellow);
+                else
+                    Util.ApresentarMensagem("FIM DOS RESULTADOS!!", ConsoleColor.Cyan);
             }
         }
 
-        private void FecharEmprestimo()
+        public void FecharEmprestimo()
         {
-            throw new NotImplementedException();
+            Console.Clear();
+
+            Console.WriteLine("\n====== FECHAR/DEVOLVER UM EMPRÉSTIMO ======");
+
+            Console.WriteLine("\nPARA ABORTAR O CADASTRO DIGITE *-- !!");
+
+            bool idInputadoValido = false;
+
+            string inputDoUsuario = "";
+
+            if (VerificaSeOhArrayDeRevistasEstaVazio())
+                Util.ApresentarMensagem("AINDA NÃO EXISTEM EMPRÉSTIMOS CADASTRADOS!!", ConsoleColor.Yellow);
+            else
+            {
+                if (abortarProcesso == false)
+                {
+                    do
+                    {
+                        Console.Write("\nDigite o Id do empréstimo que deseja fechar/devolver: ");
+
+                        inputDoUsuario = Console.ReadLine();
+
+                        if (VerificaSeEhParaAbortarOhProcesso(inputDoUsuario))
+                            break;
+                        else if (Util.VerificaSeOhInputDoUsuarioEhUmNumeroInteiro(inputDoUsuario))
+                        {
+                            idInputadoValido = true;
+
+                            Emprestimo emprestimoRetornado = null;
+
+                            emprestimoRetornado = RetornaUmEmprestimoDoArrayPeloId(Util.VerificaSeOhInputDoUsuarioEhUmNumeroInteiroEhRetornaOhValor(inputDoUsuario));
+
+                            if (emprestimoRetornado == null)
+                                Util.ApresentarMensagem("O ID INFORMADO NÃO FOI ENCONTRADO NO SISTEMA!!", ConsoleColor.Yellow);
+                            else
+                            {
+                                Console.WriteLine("\n=== ESTE É O EMPRÉSTIMO A SER FECHADO ===\n");
+
+                                emprestimoRetornado.MostrarDados();
+
+                                Console.Write("\nVOCÊ CONFIRMA A DEVOLUÇÃO? (S/N): ");
+
+                                bool confirmaDevolucao = Util.PedeConfirmacaoDoUsuario(Console.ReadLine());
+
+                                if (confirmaDevolucao == true)
+                                {
+                                    emprestimoRetornado.Devolver();
+
+                                    Util.ApresentarMensagem("EMPRÉSTIMO DEVOLVIDO COM SUCESSO!!", ConsoleColor.Green);
+                                }
+                                else
+                                    Util.ApresentarMensagem("DEVOLUÇÃO NÃO CONFIRMADA!!", ConsoleColor.Yellow);
+                            }
+                        }
+                        else
+                            Util.ApresentarMensagem("ENTRADA INVÁLIDA!!", ConsoleColor.Red);
+
+                    } while (idInputadoValido == false);
+                }
+                if (abortarProcesso == true)
+                {
+                    Util.ApresentarMensagem("VOCÊ ABORTOU A DEVOLUÇÃO!!", ConsoleColor.DarkCyan);
+                }
+            }
         }
 
-        private void CadastrarEmprestimo()
+        public void CadastrarEmprestimo()
         {
-            throw new NotImplementedException();
+            Console.Clear();
+
+            Console.WriteLine("\n====== CADASTRAR UM EMPRÉSTIMO ======");
+
+            Console.WriteLine("\nPARA ABORTAR O CADASTRO DIGITE *-- EM QUALQUER UM DOS CAMPOS!!");
+
+            if (VerificaSeOhArrayDeRevistasEstaVazio() == false && VerificaSeOhArrayDeAmigosEstaVazio() == false)
+            {
+                Revista revistaRetornada = null;
+
+                Amigo amigoRetornado = null;
+
+                if (abortarProcesso == false)
+                {
+                    do
+                    {
+                        Console.Write("\nInforme o Id da revista a ser emprestada: ");
+
+                        idRevistaInput = Console.ReadLine();
+
+                        if (VerificaSeEhParaAbortarOhProcesso(idRevistaInput))
+                        {
+                            Util.ApresentarMensagem("VOCE ABORTOU O PROCESSO!!", ConsoleColor.DarkCyan);
+                            break;
+                        }
+                        else
+                        {
+                            int idRevistaEmNumero = Util.VerificaSeOhInputDoUsuarioEhUmNumeroInteiroEhRetornaOhValor(idRevistaInput);
+
+                            revistaRetornada = RetornaUmaRevistaDoArrayPeloId(idRevistaEmNumero);
+
+                            if (revistaRetornada != null)
+                                revistaValida = true;
+                            else
+                                Util.ApresentarMensagem("REVISTA NÃO ENCONTRADA!!", ConsoleColor.Yellow);
+                        }
+                    } while (revistaValida == false);
+                }
+
+                if (abortarProcesso == false)
+                {
+                    do
+                    {
+                        Console.Write("\nInforme o Id do amigo que realizará o empréstimo: ");
+
+                        idAmigoInput = Console.ReadLine();
+
+                        if (VerificaSeEhParaAbortarOhProcesso(idAmigoInput))
+                        {
+                            Util.ApresentarMensagem("VOCE ABORTOU O PROCESSO!!", ConsoleColor.DarkCyan);
+                            break;
+                        }
+                        else
+                        {
+                            int idAmigoEmNumero = Util.VerificaSeOhInputDoUsuarioEhUmNumeroInteiroEhRetornaOhValor(idAmigoInput);
+
+                            amigoRetornado = RetornaUmAmigoDoArrayPeloId(idAmigoEmNumero);
+
+                            if (amigoRetornado != null)
+                                amigoValido = true;
+                            else
+                                Util.ApresentarMensagem("AMIGO NÃO ENCONTRADO!!", ConsoleColor.Yellow);
+                        }
+                    } while (amigoValido == false);
+                }
+
+                if (abortarProcesso == false)
+                {
+                    if (revistaRetornada != null && amigoRetornado != null)
+                    {
+                        PedeOsDadosDoEmprestimo();
+
+                        if (abortarProcesso != true)
+                        {
+                            Emprestimo emprestimo = new Emprestimo();
+
+                            emprestimo.amigoQueEmprestou = amigoRetornado;
+
+                            emprestimo.revistaDoEmprestimo = revistaRetornada;
+
+                            emprestimo.dataDoEmprestimo = dataAberturaDateTime;
+
+                            emprestimo.status = "aberto";
+
+                            emprestimo.id = geradorDeId.GerarId();
+
+                            emprestimo.Emprestar();
+
+                            AdicionarEmprestimoNoArray(emprestimo);
+
+                            Util.ApresentarMensagem("EMPRÉSTIMO CADASTRADO COM SUCESSO!!", ConsoleColor.Green);
+                        }
+                        else
+                        {
+                            Util.ApresentarMensagem("VOCÊ ABORTOU O PROCESSO!!", ConsoleColor.DarkCyan);
+                        }
+
+                    }
+                }
+            }
+            else
+                Util.ApresentarMensagem("O SISTEMA NÃO POSSUI AMIGOS OU REVISTAS CADASTRADAS, PORTANTO É IMPOSSÍVEL CADASTRAR UM EMPRÉSTIMO!!", ConsoleColor.Yellow);
+        }
+
+        public void PedeOsDadosDoEmprestimo()
+        {
+            if (abortarProcesso != true)
+            {
+                do
+                {
+                    Console.Write("\nDigite a data de abertura do empréstimo: ");
+
+                    dataAberturaInput = Console.ReadLine();
+
+                    if (VerificaSeEhParaAbortarOhProcesso(dataAberturaInput))
+                        break;
+                    else if (Util.VerificaSeUmaStringEhUmDateTimeEhRetornaOhvalor(dataAberturaInput) != new DateTime(1, 1, 1))
+                    {
+                        dataDeAberturaValida = true;
+                        dataAberturaDateTime = Util.VerificaSeUmaStringEhUmDateTimeEhRetornaOhvalor(dataAberturaInput);
+                    }
+                    else
+                        Util.ApresentarMensagem("ENTRADA INVÁLIDA!! TENTE NOVAMENTE!!", ConsoleColor.Red);
+
+                } while (dataDeAberturaValida == false);
+            }
+        }
+
+        public void AdicionarEmprestimoNoArray(Emprestimo emprestimoAhSerAdicionado)
+        {
+            int posicaoLivre = Util.RetornaAhPosicaoLivreDeUmArray(emprestimos);
+
+            emprestimos[posicaoLivre] = emprestimoAhSerAdicionado;
+        }
+
+        public Revista RetornaUmaRevistaDoArrayPeloId(int idRevista)
+        {
+            Revista retorno = null;
+
+            for (int i = 0; i < revistas.Length; i++)
+            {
+                if (revistas[i] != null && revistas[i].id == idRevista)
+                {
+                    retorno = revistas[i];
+
+                    break;
+                }
+            }
+            return retorno;
+        }
+
+        public Amigo RetornaUmAmigoDoArrayPeloId(int idAmigo)
+        {
+            Amigo retorno = null;
+
+            for (int i = 0; i < amigos.Length; i++)
+            {
+                if (amigos[i] != null && amigos[i].id == idAmigo)
+                {
+                    retorno = amigos[i];
+
+                    break;
+                }
+            }
+            return retorno;
+        }
+
+        public Emprestimo RetornaUmEmprestimoDoArrayPeloId(int idEmprestimo)
+        {
+            Emprestimo retorno = null;
+
+            for (int i = 0; i < emprestimos.Length; i++)
+            {
+                if (emprestimos[i] != null && emprestimos[i].id == idEmprestimo)
+                {
+                    retorno = emprestimos[i];
+
+                    break;
+                }
+            }
+            return retorno;
+        }
+
+        public bool VerificaSeEhParaAbortarOhProcesso(string inputDoUsuario)
+        {
+            if (inputDoUsuario == "*--")
+                abortarProcesso = true;
+            else
+                abortarProcesso = false;
+
+            return abortarProcesso;
+        }
+
+        public void RemoverEmprestimoDoArray(Emprestimo emprestimoAhSerRemovido)
+        {
+            for (int i = 0; i < emprestimos.Length; i++)
+            {
+                if (emprestimos[i] != null && emprestimos[i] == emprestimoAhSerRemovido)
+                {
+                    emprestimos[i] = null;
+
+                    break;
+                }
+            }
+        }
+
+        public bool VerificaSeOhArrayDeRevistasEstaVazio()
+        {
+            bool retorno = true;
+
+            for (int i = 0; i < revistas.Length; i++)
+            {
+                if (revistas[i] != null)
+                {
+                    retorno = false;
+
+                    break;
+                }
+            }
+
+            return retorno;
+        }
+
+        public bool VerificaSeOhArrayDeEmprestimosEstaVazio()
+        {
+            bool retorno = true;
+
+            for (int i = 0; i < emprestimos.Length; i++)
+            {
+                if (emprestimos[i] != null)
+                {
+                    retorno = false;
+
+                    break;
+                }
+            }
+
+            return retorno;
+        }
+
+        public bool VerificaSeOhArrayDeAmigosEstaVazio()
+        {
+            bool retorno = true;
+
+            for (int i = 0; i < amigos.Length; i++)
+            {
+                if (amigos[i] != null)
+                {
+                    retorno = false;
+
+                    break;
+                }
+            }
+
+            return retorno;
+        }
+
+        public void ResetarVariaveisDaTela()
+        {
+            opcaoEscolhida = "";
+            idRevistaInput = "";
+            idAmigoInput = "";
+            idEmprestimoInput = "";
+            dataAberturaInput = "";
+            opcaoEmNumero = int.MinValue;
+            abortarProcesso = false;
+            revistaValida = false;
+            amigoValido = false;
+            emprestimoValido = false;
+            dataDeAberturaValida = false;
+            dataAberturaDateTime = new DateTime(1, 1, 1);
         }
     }
 }

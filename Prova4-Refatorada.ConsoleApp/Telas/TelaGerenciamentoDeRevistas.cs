@@ -251,8 +251,6 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
 
             Console.WriteLine("\n====== CADASTRAR UMA REVISTA ======");
 
-            Console.WriteLine("\nLEMBRANDO QUE SÓ PODEM SER REMOVIDAS AS REVISTAS QUE NÃO ESTÃO EMPRESTADAS!!");
-
             Console.WriteLine("\nPARA ABORTAR O CADASTRO DIGITE *-- EM QUALQUER UM DOS CAMPOS!!");
 
             if (VerificaSeOhArrayDeCaixasEstaVazio() == false)
@@ -261,58 +259,64 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
 
                 idDaCaixaInput = Console.ReadLine();
 
-                int idCaixaEmNumero = Util.VerificaSeOhInputDoUsuarioEhUmNumeroInteiroEhRetornaOhValor(idDaCaixaInput);
-
-                Caixa caixaRetornada = null;
-
-                caixaRetornada = RetornaUmaCaixaDoArrayPeloId(idCaixaEmNumero);
-
-                if (caixaRetornada != null)
-                {
-                    caixaValida = true;
-
-                    PedeTodosOsDadosDaRevista();
-
-                    if (abortarProcesso == true)
-                        Util.ApresentarMensagem("VOCÊ ABORTOU O CADASTRO!!", ConsoleColor.DarkCyan);
-                    else
-                    {
-                        if (tipoColecaoValido == numeroEdicaoValido && numeroEdicaoValido == anoValido && anoValido == caixaValida && caixaValida == true)
-                        {
-                            Revista revista = new Revista();
-
-                            revista.id = geradorDeId.GerarId();
-
-                            revista.tipoDaColecao = tipoDaColecaoInput;
-
-                            revista.numeroDaEdicao = int.Parse(numeroDaEdicaoInput);
-
-                            revista.ano = int.Parse(anoInput);
-
-                            revista.caixaQueContemAhResvista = caixaRetornada;
-
-                            bool adicionou = AdicionarRevistaNoArray(revista);
-
-                            caixaRetornada.GuardarRevista(revista);
-
-                            if (adicionou == true)
-                                Util.ApresentarMensagem("REVISTA CADASTRADA COM SUCESSO!!", ConsoleColor.Green);
-                            else
-                                Util.ApresentarMensagem("FALHA AO CADASTRAR REVISTA!!", ConsoleColor.Red);
-                        }
-                    }
-                }
+                if (VerificaSeEhParaAbortarOhProcesso(idDaCaixaInput))
+                    Util.ApresentarMensagem("VOCE ABORTOU O PROCESSO!!", ConsoleColor.DarkCyan);
                 else
                 {
-                    Util.ApresentarMensagem("CAIXA NÃO ENCONTRADA!!", ConsoleColor.Yellow);
+                    int idCaixaEmNumero = Util.VerificaSeOhInputDoUsuarioEhUmNumeroInteiroEhRetornaOhValor(idDaCaixaInput);
+
+                    Caixa caixaRetornada = null;
+
+                    caixaRetornada = RetornaUmaCaixaDoArrayPeloId(idCaixaEmNumero);
+
+                    if (caixaRetornada != null)
+                    {
+                        caixaValida = true;
+
+                        PedeTodosOsDadosDaRevista();
+
+                        if (abortarProcesso == true)
+                            Util.ApresentarMensagem("VOCÊ ABORTOU O CADASTRO!!", ConsoleColor.DarkCyan);
+                        else
+                        {
+                            if (tipoColecaoValido == numeroEdicaoValido && numeroEdicaoValido == anoValido && anoValido == caixaValida && caixaValida == true)
+                            {
+                                Revista revista = new Revista();
+
+                                revista.id = geradorDeId.GerarId();
+
+                                revista.tipoDaColecao = tipoDaColecaoInput;
+
+                                revista.numeroDaEdicao = int.Parse(numeroDaEdicaoInput);
+
+                                revista.ano = int.Parse(anoInput);
+
+                                revista.caixaQueContemAhResvista = caixaRetornada;
+
+                                bool adicionou = AdicionarRevistaNoArray(revista);
+
+                                caixaRetornada.GuardarRevista(revista);
+
+                                if (adicionou == true)
+                                    Util.ApresentarMensagem("REVISTA CADASTRADA COM SUCESSO!!", ConsoleColor.Green);
+                                else
+                                    Util.ApresentarMensagem("FALHA AO CADASTRAR REVISTA!!", ConsoleColor.Red);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Util.ApresentarMensagem("CAIXA NÃO ENCONTRADA!!", ConsoleColor.Yellow);
+                    }
                 }
             }
             else
             {
                 Util.ApresentarMensagem("AINDA NÃO EXISTEM CAIXAS CADASTRADAS, PORTANTO NÃO PODEMOS CADASTRAR REVISTAS!!", ConsoleColor.Yellow);
             }
-        }
 
+        }
+       
         public void PedeTodosOsDadosDaRevista()
         {
             if (abortarProcesso != true)

@@ -4,8 +4,6 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
 {
     public class Util
     {
-        private static int id = 0;
-
         public static bool VerificaSeUmaStringTemUmTamanhoMinimoPreDeterminado(string stringAhSerAnalisada, int tamanhoMinimo)
         {
             if (stringAhSerAnalisada.Length >= tamanhoMinimo)
@@ -13,22 +11,22 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
             else
                 return false;
         }
-        
+
         public static int VerificaSeOhInputDoUsuarioEhUmNumeroInteiroEhRetornaOhValor(string opcaoInputada)
         {
             return int.TryParse(opcaoInputada, out int retorno) == true ? retorno : int.MinValue;
         }
-        
+
         public static bool VerificaSeOhInputDoUsuarioEhUmNumeroInteiro(string campoInputado)
         {
             return int.TryParse(campoInputado, out int retorno) == true ? true : false;
         }
-        
+
         public static int VerificaSeOhInputDoUsuarioPertenceAhUmIntervaloEhRetornaOhValor(int opcaoInputada, int primeiraOpcao, int ultimaOpcao)
         {
             return (opcaoInputada >= primeiraOpcao && opcaoInputada <= ultimaOpcao) ? opcaoInputada : int.MinValue;
         }
-        
+
         public static int ValidaAhOpcaoInputadaPeloUsuarioEmUmMenu(string opcaoInputada, int inicioMenu, int fimMenu)
         {
             int retorno = int.MinValue;
@@ -41,7 +39,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
 
             return retorno;
         }
-        
+
         public static void ApresentarMensagem(string mensagemAhSerApresentada, ConsoleColor cor)
         {
             Console.ForegroundColor = cor;
@@ -58,7 +56,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
 
             Console.ReadLine();
         }
-        
+
         public static int RetornaAhPosicaoLivreDeUmArray(Object[] arrayAhSerAnalisado)
         {
             int retorno = int.MinValue;
@@ -73,12 +71,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
             }
             return retorno;
         }
-        
-        public static int GerarId()
-        {
-            return id++;
-        }
-        
+
         public static bool PedeConfirmacaoDoUsuario(string confirmacao)
         {
             if (confirmacao == "s" || confirmacao == "S")
@@ -86,5 +79,16 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
             else
                 return false;
         }
+
+        public static DateTime VerificaSeUmaStringEhUmDateTimeEhRetornaOhvalor(string data)
+        {
+            DateTime retorno = new DateTime(1, 1, 1);
+
+            if (DateTime.TryParse(data, out retorno) == true)
+                return retorno;
+            else
+                return retorno;
+        }
+
     }
 }
