@@ -7,11 +7,10 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
         public string opcaoEscolhida = "";
         public int inicioMenu = 0, fimMenu = 4, opcaoEmNumero = int.MinValue;
         public bool telaContinuaSendoExibida = true;
-        public TelaGerenciamentoDeRevistas gerenciamentoDeRevistas; 
+        public TelaGerenciamentoDeRevistas gerenciamentoDeRevistas;
         public TelaGerenciamentoDeCaixas gerenciamentoDeCaixas;
         public TelaGerenciamentoDeAmigos gerenciamentoDeAmigos;
         public TelaGerenciamentoDeEmprestimos gerenciamentoDeEmprestimos;
-       
 
         public void ApresentarMenu()
         {
@@ -32,7 +31,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
             }
         }
 
-       public void ResetarVariaveisDeTela()
+        public void ResetarVariaveisDeTela()
         {
             opcaoEscolhida = "";
             opcaoEmNumero = int.MinValue;
