@@ -5,7 +5,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
     public class TelaGerenciamentoDeEmprestimos
     {
         public string opcaoEscolhida = "";
-        public int inicioMenu = 0, fimMenu = 5, opcaoEmNumero = int.MinValue;
+        public int inicioMenu = 0, fimMenu = 7, opcaoEmNumero = int.MinValue;
         public bool telaContinuaSendoExibida = true;
         public Emprestimo[] emprestimos;
         public Revista[] revistas;
@@ -25,6 +25,8 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
                 Console.WriteLine("\n * Digite 3 para listar todos os empréstimos;");
                 Console.WriteLine("\n * Digite 4 para listar todos os empréstimos do mês;");
                 Console.WriteLine("\n * Digite 5 para listar todos os empréstimos em aberto;");
+                Console.WriteLine("\n * Digite 6 para excluir um empréstimo;");
+                Console.WriteLine("\n * Digite 7 para editar um empréstimo;");
                 Console.Write("\nSua escolha: ");
                 opcaoEscolhida = Console.ReadLine();
                 opcaoEmNumero = Util.ValidaAhOpcaoInputadaPeloUsuarioEmUmMenu(opcaoEscolhida, inicioMenu, fimMenu);
@@ -55,10 +57,27 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
                 case 5:
                     ListarTodosOsEmprestimosEmAberto();
                     break;
+                case 6:
+                    ExcluirUmEmprestimo();
+                    break;
+                case 7:
+                    EditarUmEmprestimo();
+                    break;
                 case int.MinValue:
                     Util.ApresentarMensagem("ENTRADA INVÁLIDA!!DIGITE APENAS NÚMEROS DE " + inicioMenu + " ATÉ " + fimMenu, ConsoleColor.Red);
                     break;
             }
+        }
+
+        //Implementar o empréstimo
+        private void EditarUmEmprestimo()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ExcluirUmEmprestimo()
+        {
+            throw new NotImplementedException();
         }
 
         public void ListarTodosOsEmprestimos()
