@@ -27,11 +27,10 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
                 Console.WriteLine("\n * Digite 5 para listar todos os empréstimos em aberto;");
                 Console.Write("\nSua escolha: ");
                 opcaoEscolhida = Console.ReadLine();
-
                 opcaoEmNumero = Util.ValidaAhOpcaoInputadaPeloUsuarioEmUmMenu(opcaoEscolhida, inicioMenu, fimMenu);
-
                 ExecutarAcao();
             }
+            telaContinuaSendoExibida = true;
         }
 
         public void ExecutarAcao()
@@ -78,7 +77,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
                 {
                     emprestimos[i].MostrarDados();
                 }
-                
+
                 Util.ApresentarMensagem("FIM DOS RESULTADOS!!", ConsoleColor.Cyan);
             }
         }

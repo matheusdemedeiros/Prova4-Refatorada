@@ -44,14 +44,57 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
             Console.Write("\nID: {0}\t\tTipo da coleção: {1}\n", id, tipoDaColecao);
         }
 
-        public void RegistrarDevolucao()
+        public void RegistrarDevolucao(Emprestimo emprestimo)
         {
             estaEmprestada = false;
+
+            RemoverEmprestimoDoArray(emprestimo);
         }
 
-        public void RegistrarUmEmprestimo()
+        public void RegistrarUmEmprestimo(Emprestimo emprestimo)
         {
             estaEmprestada = true;
+            
+            AdicionarEmprestimoNoArray(emprestimo);
+        }
+
+        public bool TemEmprestimosEmAberto()
+        {
+            bool retorno = false;
+
+            for (int i = 0; i < emprestimosVinculados.Length; i++)
+            {
+                if (emprestimosVinculados[i] != null)
+                {
+                    if (emprestimosVinculados[i].status == "aberto")
+                    {
+                        retorno = true;
+
+                        break;
+                    }
+                }
+            }
+            return retorno;
+        }
+
+        public void AdicionarEmprestimoNoArray(Emprestimo emprestimoAhSerAdicionado)
+        {
+            int posicaoLivre = Util.RetornaAhPosicaoLivreDeUmArray(emprestimosVinculados);
+
+            emprestimosVinculados[posicaoLivre] = emprestimoAhSerAdicionado;
+        }
+
+        public void RemoverEmprestimoDoArray(Emprestimo emprestimoAhSerRemovido)
+        {
+            for (int i = 0; i < emprestimosVinculados.Length; i++)
+            {
+                if (emprestimosVinculados[i] == emprestimoAhSerRemovido)
+                {
+                    emprestimosVinculados[i] = null;
+
+                    break;
+                }
+            }
         }
 
         #endregion

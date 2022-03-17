@@ -35,6 +35,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
                 opcaoEmNumero = Util.ValidaAhOpcaoInputadaPeloUsuarioEmUmMenu(opcaoEscolhida, inicioMenu, fimMenu);
                 ExecutarAcao();
             }
+            telaContinuaSendoExibida = true;
         }
 
         public void ExecutarAcao()
@@ -207,6 +208,12 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
 
                                             Util.ApresentarMensagem("O AMIGO FOI REMOVIDO COM SUCESSO, ASSIM COMO OS SEUS EMPRÉSTIMOS!!", ConsoleColor.Green);
                                         }
+                                    }
+                                    else
+                                    {
+                                        RemoverAmigoDoArray(amigoRetornado);
+
+                                        Util.ApresentarMensagem("O AMIGO FOI REMOVIDO COM SUCESSO, ASSIM COMO OS SEUS EMPRÉSTIMOS!!", ConsoleColor.Green);
                                     }
                                 }
                                 else
@@ -391,7 +398,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
 
             for (int i = 0; i < amigos.Length; i++)
             {
-                if (amigos[i].id == idAmigo)
+                if (amigos[i] != null && amigos[i].id == idAmigo)
                 {
                     retorno = amigos[i];
 

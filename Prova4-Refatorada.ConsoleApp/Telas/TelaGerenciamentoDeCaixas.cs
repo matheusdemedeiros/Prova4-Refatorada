@@ -35,6 +35,8 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
                 opcaoEmNumero = Util.ValidaAhOpcaoInputadaPeloUsuarioEmUmMenu(opcaoEscolhida, inicioMenu, fimMenu);
                 ExecutarAcao();
             }
+
+            telaContinuaSendoExibida = true;
         }
 
         public void ExecutarAcao()
@@ -197,6 +199,8 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
                                         Util.ApresentarMensagem("ESTA CAIXA NÃO PODE SER REMOVIDA, POIS TEM REVISTAS EMPRESTADAS!", ConsoleColor.Red);
                                     else
                                     {
+                                        ApagaTodasAsRevistasDeUmaCaixa(caixaRetornada);
+
                                         RemoverCaixaDoArray(caixaRetornada);
                                         Util.ApresentarMensagem("A CAIXA FOI REMOVIDA COM SUCESSO!!", ConsoleColor.Green);
                                     }
@@ -364,7 +368,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
 
             for (int i = 0; i < caixas.Length; i++)
             {
-                if (caixas[i].id == idCaixa)
+                if (caixas[i] != null && caixas[i].id == idCaixa)
                 {
                     retorno = caixas[i];
 
@@ -389,7 +393,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
 
             for (int i = 0; i < caixas.Length; i++)
             {
-                if (caixas[i] == caixaAhSerRemovida)
+                if (caixas[i] != null && caixas[i] == caixaAhSerRemovida)
                 {
                     caixas[i] = null;
 
@@ -417,6 +421,41 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
             }
 
             return retorno;
+        }
+
+        public bool VerificaSeOhArrayDeRevistasEstaVazio()
+        {
+            bool retorno = true;
+
+            for (int i = 0; i < revistas.Length; i++)
+            {
+                if (revistas[i] != null)
+                {
+                    retorno = false;
+
+                    break;
+                }
+            }
+
+            return retorno;
+        }
+
+        public void ApagaTodasAsRevistasDeUmaCaixa(Caixa caixaRetornada)
+        {
+            if (VerificaSeOhArrayDeRevistasEstaVazio() == false)
+            {
+                for (int i = 0; i < caixaRetornada.revistasGuardadasAtualmente.Length; i++)
+                {
+                    if (caixaRetornada.revistasGuardadasAtualmente[i] != null)
+                    {
+                        for (int j = 0; j < revistas.Length; j++)
+                        {
+                            if (caixaRetornada.revistasGuardadasAtualmente[i] == revistas[j])
+                                revistas[j] = null;
+                        }
+                    }
+                }
+            }
         }
 
         public void ResetarVariaveisDaTela()

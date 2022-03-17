@@ -38,6 +38,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
                 opcaoEmNumero = Util.ValidaAhOpcaoInputadaPeloUsuarioEmUmMenu(opcaoEscolhida, inicioMenu, fimMenu);
                 ExecutarAcao();
             }
+            telaContinuaSendoExibida = true;
         }
 
         public void ExecutarAcao()
@@ -65,7 +66,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
                     break;
             }
         }
-        
+
         public void EditarUmaRevista()
         {
             Console.Clear();
@@ -381,14 +382,17 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
 
         public void ApagaTodosOsEmprestimosDeUmaRevista(Revista revistaRetornada)
         {
-            for (int i = 0; i < revistaRetornada.emprestimosVinculados.Length; i++)
+            if (VerificaSeOhArrayDeEmprestimosEstaVazio() == false)
             {
-                if (revistaRetornada.emprestimosVinculados[i] != null)
+                for (int i = 0; i < revistaRetornada.emprestimosVinculados.Length; i++)
                 {
-                    for (int j = 0; j < emprestimos.Length; j++)
+                    if (revistaRetornada.emprestimosVinculados[i] != null)
                     {
-                        if (revistaRetornada.emprestimosVinculados[i] == emprestimos[j])
-                            emprestimos[j] = null;
+                        for (int j = 0; j < emprestimos.Length; j++)
+                        {
+                            if (revistaRetornada.emprestimosVinculados[i] == emprestimos[j])
+                                emprestimos[j] = null;
+                        }
                     }
                 }
             }
@@ -400,7 +404,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
 
             for (int i = 0; i < revistas.Length; i++)
             {
-                if (revistas[i].id == idRevista)
+                if (revistas[i] != null && revistas[i].id == idRevista)
                 {
                     retorno = revistas[i];
 
@@ -416,7 +420,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
 
             for (int i = 0; i < caixas.Length; i++)
             {
-                if (caixas[i].id == idcaixa)
+                if (caixas[i] != null && caixas[i].id == idcaixa)
                 {
                     retorno = caixas[i];
 
@@ -461,6 +465,23 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
             for (int i = 0; i < revistas.Length; i++)
             {
                 if (revistas[i] != null)
+                {
+                    retorno = false;
+
+                    break;
+                }
+            }
+
+            return retorno;
+        }
+
+        public bool VerificaSeOhArrayDeEmprestimosEstaVazio()
+        {
+            bool retorno = true;
+
+            for (int i = 0; i < emprestimos.Length; i++)
+            {
+                if (emprestimos[i] != null)
                 {
                     retorno = false;
 

@@ -17,6 +17,7 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
         {
             while (telaContinuaSendoExibida)
             {
+                ResetarVariaveisDeTela();
                 Console.Clear();
                 Console.WriteLine("\n====== MENU PRINCIPAL ======");
                 Console.WriteLine("\n * Digite 0 para sair;");
@@ -29,6 +30,12 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
                 opcaoEmNumero = Util.ValidaAhOpcaoInputadaPeloUsuarioEmUmMenu(opcaoEscolhida, inicioMenu, fimMenu);
                 ExecutarAcao();
             }
+        }
+
+       public void ResetarVariaveisDeTela()
+        {
+            opcaoEscolhida = "";
+            opcaoEmNumero = int.MinValue;
         }
 
         public void ExecutarAcao()

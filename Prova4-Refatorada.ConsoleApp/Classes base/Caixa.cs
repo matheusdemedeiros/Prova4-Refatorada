@@ -10,28 +10,23 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
         public int numero;
         public Revista[] revistasGuardadasAtualmente = new Revista[100];
 
-        public void GuardarRevista(Revista revistaAhSerGuqrdada)
+        public void GuardarRevista(Revista revistaAhSerGuardada)
         {
             int posicaoLivre = Util.RetornaAhPosicaoLivreDeUmArray(revistasGuardadasAtualmente);
-            revistasGuardadasAtualmente[posicaoLivre] = revistaAhSerGuqrdada;
+            revistasGuardadasAtualmente[posicaoLivre] = revistaAhSerGuardada;
         }
 
         public void RetirarRevista(Revista revistaAhSerRetirada)
         {
             for (int i = 0; i < revistasGuardadasAtualmente.Length; i++)
             {
-                if (revistasGuardadasAtualmente[i] == revistaAhSerRetirada)
+                if (revistasGuardadasAtualmente[i] != null && revistasGuardadasAtualmente[i] == revistaAhSerRetirada)
                 {
-                    revistasGuardadasAtualmente[i] = null;
+                    revistasGuardadasAtualmente[i].estaEmprestada = true;
                     break;
                 }
             }
         }
-
-
-
-
-
 
         public void MostrarIdEhEtiqueta()
         {
@@ -44,24 +39,31 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
             Console.Write("\nEtiqueta da caixa: {0}\n", etiqueta);
             Console.Write("\nCor da caixa: {0}\n", cor);
             Console.Write("\nNúmero: {0}\n", numero);
-            Console.Write("\nQuantidade de revistas guardadas atualmente: {0}\n", RetornaAhQuantidadeDeRevistasGuardadasAtualmente());
+            Console.Write("\nQuantidade de revistas guardadas atualmente: {0}\n", VerificSeACaixaPossuiAlgumaRevistaEmprestada());
         }
 
-
-        public int RetornaAhQuantidadeDeRevistasGuardadasAtualmente()
+        public bool VerificSeACaixaPossuiAlgumaRevistaEmprestada()
         {
-            if (Util.RetornaAhPosicaoLivreDeUmArray(revistasGuardadasAtualmente) == 0)
-                return 0;
-            else
+            bool retorno = false;
+            
+            for (int i = 0; i < revistasGuardadasAtualmente.Length; i++)
             {
-                return Util.RetornaAhPosicaoLivreDeUmArray(revistasGuardadasAtualmente) - 1;
-            }
+                if(revistasGuardadasAtualmente[i] != null && revistasGuardadasAtualmente[i].estaEmprestada == true)
+                {
+                    retorno = true;
 
+                    break;
+                }
+            }
+            return retorno;
         }
 
-        internal void MostrarTodosOsDados()
+        public void MostrarTodosOsDados()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("\nID: {0}", id);
+            Console.WriteLine("\nEtiqueta: {0}", etiqueta);
+            Console.WriteLine("\nCor: {0}", cor);
+            Console.WriteLine("\nNúmero: {0}", numero);
         }
     }
 }
