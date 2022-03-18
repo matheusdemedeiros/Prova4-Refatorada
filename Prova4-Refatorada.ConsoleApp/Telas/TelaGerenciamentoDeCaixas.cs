@@ -236,7 +236,10 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
                 for (int i = 0; i < caixas.Length; i++)
                 {
                     if (caixas[i] != null)
+                    {
                         caixas[i].MostrarTodosOsDados();
+                        Console.WriteLine("====================================");
+                    }
                 }
 
                 Util.ApresentarMensagem("FIM DOS RESULTADOS!!", ConsoleColor.Cyan);

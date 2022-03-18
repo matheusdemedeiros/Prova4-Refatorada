@@ -12,8 +12,36 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
             Caixa[] todasAsCaixas = new Caixa[100];
             Amigo[] todosOsAmigos = new Amigo[100];
 
+            #region Dados para testes
+            /*
+            Caixa cx1 = new Caixa();
+            cx1.id = 4;
+            cx1.etiqueta = "primeira caixa";
+            cx1.cor = "verde";
+            cx1.numero = 6;
+
+            Caixa cx2 = new Caixa();
+            cx2.id = 5;
+            cx2.etiqueta = "segunda caixa";
+            cx2.cor = "amarela";
+            cx2.numero = 8;
+
+
+            Amigo a1 = new Amigo();
+            a1.endereco = "rua das laranjeiras";
+            a1.nomeDoResponsavel = "pai do pedro";
+            a1.nome = "Pedro da Silva";
+            a1.id = 77;
+            a1.telefone = "49984337286";
+
+            todasAsCaixas[0] = cx1;
+            todasAsCaixas[1] = cx2;
+            todosOsAmigos[0] = a1;
+            */
+            #endregion
+
             TelaMenuPrincipal menuPrincipal = new TelaMenuPrincipal();
-            
+
             menuPrincipal.gerenciamentoDeEmprestimos = new TelaGerenciamentoDeEmprestimos();
             menuPrincipal.gerenciamentoDeEmprestimos.emprestimos = todosOsEmprestimos;
             menuPrincipal.gerenciamentoDeEmprestimos.revistas = todasAsRevistas;

@@ -238,7 +238,10 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
                 for (int i = 0; i < revistas.Length; i++)
                 {
                     if (revistas[i] != null)
+                    {
                         revistas[i].MostrarTodosOsDados();
+                        Console.WriteLine("====================================");
+                    }
                 }
 
                 Util.ApresentarMensagem("FIM DOS RESULTADOS!!", ConsoleColor.Cyan);

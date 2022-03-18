@@ -247,7 +247,10 @@ namespace Prova4_ClubeDaLeitura.ConsoleApp
                 for (int i = 0; i < amigos.Length; i++)
                 {
                     if (amigos[i] != null)
+                    {
                         amigos[i].MostrarTodosOsDados();
+                        Console.WriteLine("====================================");
+                    }
                 }
 
                 Util.ApresentarMensagem("FIM DOS RESULTADOS!!", ConsoleColor.Cyan);
